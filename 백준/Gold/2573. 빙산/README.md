@@ -184,3 +184,5 @@
 
  <p>첫 줄에 빙산이 분리되는 최초의 시간(년)을 출력한다. 만일 빙산이 다 녹을 때까지 분리되지 않으면 0을 출력한다.</p>
 
+### 풀이
+<img src="https://user-images.githubusercontent.com/78345851/186792324-ff0c3820-9ca1-406b-be49-5bdcd39b1766.jpg" width="400" height="500"/>
