@@ -15,7 +15,7 @@ public class Main {
 		int N = Integer.parseInt(st.nextToken());
 		int M = Integer.parseInt(st.nextToken());
 		
-		Map<String, Integer> map = new HashMap<>();
+		Map<String, Integer> map = new TreeMap<>();
 		int cnt = 0;
 		for(int i=0;i<N+M;i++) {
 			if(i<N) {
@@ -28,7 +28,6 @@ public class Main {
 				cnt++;
 			}
 		}
-		map = new TreeMap<>(map);
 		
 		System.out.println(cnt);
 		for(String key: map.keySet()) {
