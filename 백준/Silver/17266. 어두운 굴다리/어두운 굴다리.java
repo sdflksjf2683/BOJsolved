@@ -34,13 +34,13 @@ public class Main {
 		
 		//end input
 		
-		int left=1,right=N, ans=Integer.MAX_VALUE;
+		int left=1,right=N, ans=0;
 		
 		while(left<=right) {
 			int mid = (left+right)/2;
 			
 			if(check(mid)) {
-				ans = Math.min(ans, mid);
+				ans = mid;
 				right = mid-1;
 				continue;
 			}
