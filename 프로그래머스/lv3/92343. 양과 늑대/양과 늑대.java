@@ -20,12 +20,9 @@ class Solution {
         
         for(int[] edge: edges) {
             if(visit[edge[0]] && !visit[edge[1]]) {
-                boolean[] nvisit = visit.clone();
-                dfs(sheep, wolf, edge[1], nvisit);
-            }
-                
+                dfs(sheep, wolf, edge[1], visit.clone());
+            }    
         }
-        
     }
     
     public int solution(int[] tinfo, int[][] tedges) {
