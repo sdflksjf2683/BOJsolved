@@ -9,7 +9,7 @@ public class Main {
 	static int N,C;
 	static int[] house;
 	
-	static int isPossible(int dist) {
+	static boolean isPossible(int dist) {
 		int cnt=1;
 		int loc = house[0];
 		
@@ -22,7 +22,7 @@ public class Main {
 			}
 		}
 		
-		return cnt;
+		return cnt<C;
 	}
 	
 	public static void main(String[] args) throws IOException {
@@ -44,7 +44,7 @@ public class Main {
 		while(l<r) {
 			int mid = (l+r)/2;
 			
-			if(isPossible(mid)<C)
+			if(isPossible(mid))
 				r = mid;
 			else
 				l = mid+1;
