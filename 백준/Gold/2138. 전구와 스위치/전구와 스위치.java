@@ -4,53 +4,43 @@ import java.io.InputStreamReader;
 
 public class Main {
 	
-	static int N, result;
+	static int N, ans;
+	static char[] target;
 	
-	static char[] after;
-	
-	static char[][] before;
-	
-	static void bulb(int tmp, int idx, int cnt) {
+	static void bulb(int idx, int cnt, char[] org) {
 		if(idx==N) {
-			if(before[tmp][idx-1]==after[idx-1])
-				result = Math.min(result, cnt);
-		} else {
-			if(before[tmp][idx-1]!=after[idx-1]) {
-				turnSwitch(tmp, idx);
-				bulb(tmp, idx+1, cnt+1);
-			} else {
-				bulb(tmp, idx+1, cnt);
-			}
+			if(org[idx-1]==target[idx-1])
+				ans = Math.min(ans, cnt);
+			return;
 		}
+		
+		if(org[idx-1]!=target[idx-1]) 
+			bulb(idx+1, cnt+1, turnSwitch(idx, org));
+		else 
+			bulb(idx+1, cnt, org);
 	}
 	
-	static void turnSwitch(int cur, int idx) {
-		for(int i=idx-1;i<idx+2;i++) {
-			if(-1<i && i<N)
-				before[cur][i] = before[cur][i]=='1'?'0':'1';
+	static char[] turnSwitch(int idx, char[] org) {
+		for(int i=idx-1;i<=idx+1;i++) {
+			if(i<0 || i>=N) continue;
+			org[i] = org[i]=='0'?'1':'0';
 		}
+		
+		return org;
 	}
 	
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 		
-		before = new char[2][N];
-		before[0] = br.readLine().toCharArray();
-		after = br.readLine().toCharArray();
+		char[] origin1 = br.readLine().toCharArray();
+		char[] origin2 = origin1.clone();
+		target = br.readLine().toCharArray();
 		
-		for(int i=0;i<N;i++)
-			before[1][i] = before[0][i];
+		ans = Integer.MAX_VALUE;
+		bulb(1,0,origin1);
+		bulb(1,1,turnSwitch(0,origin2));
 		
-		result = Integer.MAX_VALUE;
-		
-		bulb(0,1,0);
-		
-		turnSwitch(1,0);
-		
-		bulb(1,1,1);
-		
-		result = result==Integer.MAX_VALUE?-1:result;
-		System.out.println(result);
+		System.out.println(ans==Integer.MAX_VALUE?-1:ans);
 	}
 }
