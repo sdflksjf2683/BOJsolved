@@ -20,9 +20,7 @@ class Solution {
             if(ni<1 || ni>N || nj<1 || nj>M) continue;
             
             if(dist>k) continue;
-            
-            if(dist%2 != k%2) continue;
-            
+                        
             dfs(ni,nj,k-1, tmp+command[d], Math.abs(ni-R)+Math.abs(nj-C));
             
             if(answer.length()>0) return; //사전순으로 가장 빠른 답을 출력하므로 더 이상 탐색을 진행하지 않음
@@ -38,12 +36,11 @@ class Solution {
         
         int dist = Math.abs(x-r)+Math.abs(y-c);
         
+        if((dist%2 != k%2) || dist>k)
+            return "impossible";
+        
         dfs(x,y,k,"",dist);
         
-        if(answer.length()>0)
-            return answer;
-        
-        
-        return "impossible";
+        return answer;
     }
 }
