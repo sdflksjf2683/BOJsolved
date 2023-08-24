@@ -3,20 +3,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-/*
-10 10
-RRLLLLLRRL
-UDDDULLDUU
-RLURDULRUD
-DULULLURRD
-RUUURUDUDL
-ULRUULLLLU
-RDLLDDRLDD
-DLRUULLRDL
-UUUUUDULLD
-URUULLRRRU
-*/
-
 public class Main {
 	
 	static int N,M,cnt;
