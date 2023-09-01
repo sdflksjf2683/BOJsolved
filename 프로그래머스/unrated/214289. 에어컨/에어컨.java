@@ -3,21 +3,32 @@ class Solution {
         
         int N = onboard.length;
         int[][] dp = new int[51][N+1];
-		temperature +=10; t1 +=10; t2+=10;
+		temperature +=10; 
+        t1 +=10; 
+        t2+=10;
 		
-		for(int i=N-1;i>=0;i--) {
-			for(int j=0;j<51;j++) {
-				dp[j][i] = Integer.MAX_VALUE - Math.max(a, b);
+		for(int j=N-1;j>=0;j--) {
+			for(int i=0;i<51;i++) {
+				dp[i][j] = Integer.MAX_VALUE - Math.max(a, b);
 				
-				if(onboard[i]==1 &&(j<t1 || j>t2)) continue;
+				if(onboard[j]==1 &&(i<t1 || i>t2)) continue;
 				
-				if(j==temperature) dp[j][i] = Math.min(dp[j][i], dp[j][i+1]);
-				else if(j>0 && j>temperature) dp[j][i] = Math.min(dp[j][i], dp[j-1][i+1]);
-				else if(j<50 && j<temperature) dp[j][i] = Math.min(dp[j][i], dp[j+1][i+1]);
-				
-				if(j<50) dp[j][i] = Math.min(dp[j][i], dp[j+1][i+1]+a);
-				if(j>0) dp[j][i] = Math.min(dp[j][i], dp[j-1][i+1]+a);
-				dp[j][i] = Math.min(dp[j][i], dp[j][i+1]+b);
+				if(i==temperature) 
+                    dp[i][j] = Math.min(dp[i][j], dp[i][j+1]);
+                
+                if(i>0) {
+                    if(i>temperature)
+                        dp[i][j] = Math.min(dp[i][j], dp[i-1][j+1]);
+                    dp[i][j] = Math.min(dp[i][j], dp[i-1][j+1]+a);
+                }
+                
+                if(i<50) {
+                    if(i<temperature)
+                        dp[i][j] = Math.min(dp[i][j], dp[i+1][j+1]);
+                    dp[i][j] = Math.min(dp[i][j], dp[i+1][j+1]+a);
+                }
+
+				dp[i][j] = Math.min(dp[i][j], dp[i][j+1]+b);
 				
 			}
 		}
