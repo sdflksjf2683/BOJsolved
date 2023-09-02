@@ -14,8 +14,7 @@ class Solution {
                 if(r==N)
                     continue;
                 sum += sequence[r];
-            }
-            if(sum==k) {
+            } else if(sum==k) {
                 if(r-l < len) {
                     len = r-l;
                     answer[0] = l;
@@ -24,8 +23,7 @@ class Solution {
                     sum -= sequence[l];
                     l++;
                 }
-            }
-            if(sum>k) {
+            } else {
                 sum -= sequence[l];
                 l++;
             }
