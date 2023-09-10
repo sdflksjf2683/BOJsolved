@@ -1,114 +1,123 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class Main {
-    static class Point{
-        int x;
-        int y;
-        Point(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
-    static char[][] map = new char[12][];
-    static boolean[][] isBigGroup = new boolean[12][6];
-    static int[][] dist = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        for(int i=0; i<12; i++) {
-            map[i] = br.readLine().toCharArray();
-        }
-        int cnt = 0;
-
-        while(isBroken()) {
-            brokeMap();
-            mapDown();
-            isBigGroup = new boolean[12][6];
-            cnt++;
-        }
-        System.out.printf("%d", cnt);
-    }
-
-    public static void mapDown() {
-        for(int j=0; j<6; j++) {
-            ArrayList<Character> list = new ArrayList<>();
-            for(int i=11; i>=0; i--) {
-                if(map[i][j] == '.') continue;
-                list.add(map[i][j]);
-            }
-            if(list.size()==0) continue;
-            for(int i=0; i<12; i++) {
-                if(i < list.size()) {
-                    map[11-i][j] = list.get(i);
-                } else {
-                    map[11-i][j] = '.';
-                }
-            }
-        }
-    }
-
-    public static void brokeMap() {
-        for(int i=0; i<12; i++) {
-            for(int j=0; j<6; j++) {
-                if(!isBigGroup[i][j]) continue;
-                map[i][j] = '.';
-            }
-        }
-    }
-
-    public static boolean isBroken() {
-        boolean isBroke = false;
-        boolean[][] visited = new boolean[12][6];
-
-        for(int i=0; i<12; i++) {
-            for(int j=0; j<6; j++) {
-                if(map[i][j] == '.' || visited[i][j]) continue;
-                if(isGroup(i, j, visited)) {
-                    isBroke = true;
-                }
-            }
-        }
-        return isBroke;
-    }
-
-    public static boolean isGroup(int x, int y, boolean[][] visited) {
-        Queue<Point> q = new LinkedList<>();
-        ArrayList<Point> list = new ArrayList<>();
-        char color = map[x][y];
-
-        q.add(new Point(x, y));
-        list.add(new Point(x, y));
-        visited[x][y] = true;
-
-        while(!q.isEmpty()) {
-            Point now = q.poll();
-
-            for(int i=0; i<4; i++) {
-                int nx = now.x + dist[i][0];
-                int ny = now.y + dist[i][1];
-
-                if(!isIn(nx, ny) || visited[nx][ny] || map[nx][ny] != color) continue;
-                visited[nx][ny] = true;
-                q.add(new Point(nx, ny));
-                list.add(new Point(nx, ny));
-            }
-        }
-
-        if(list.size() >= 4) {
-            for(Point now: list) {
-                isBigGroup[now.x][now.y] = true;
-            }
-            return true;
-        }
-        return false;
-    }
-
-    public static boolean isIn(int x, int y) {
-        return 0<=x && x<12 && 0<=y && y<6;
-    }
+	
+	static int answer;
+		
+	static char[][] map;
+	static boolean[][] visit;
+	
+	static ArrayList<int[]> plist;
+	
+	static int[] di = {-1,1,0,0};
+	static int[] dj = {0,0,-1,1};
+	
+	static void print(String s) {
+		
+		System.out.println(s);
+		
+		for(int i=0;i<12;i++) {
+			for(int j=0;j<6;j++) {
+				System.out.print(map[i][j]+" ");
+			}
+			System.out.println();
+		}
+		System.out.println();
+	}
+	
+	static void move(int j) {
+		Queue<Character> q = new LinkedList<>();
+		for(int i=11;i>=0;i--) {
+			if(map[i][j]!='.') {
+				q.offer(map[i][j]);
+				map[i][j] = '.';
+			}
+		}
+		
+		int idx = 11;
+		while(!q.isEmpty()) {
+			map[idx][j] = q.poll();
+			idx--;
+		}
+	}
+	
+	static void down() {
+		for(int j=0;j<6;j++) {
+			for(int i=11;i>=0;i--) {
+				if(map[i][j]=='.') {
+					move(j);
+				}
+			}
+		}
+	}
+	
+	static void find(int i, int j, char c) {
+		Queue<int[]> q = new LinkedList<>();
+		q.offer(new int[] {i,j});
+		plist.add(new int[] {i,j});
+		
+		visit[i][j] = true;
+		
+		while(!q.isEmpty()) {
+			
+			int ti = q.peek()[0];
+			int tj = q.poll()[1];
+			
+			for(int d=0;d<4;d++) {
+				int ni = ti+di[d];
+				int nj = tj+dj[d];
+				
+				if(ni<0 || ni>=12 || nj<0 || nj>=6) continue;
+				
+				if(visit[ni][nj] || map[ni][nj]!=c) continue;
+				
+				visit[ni][nj] = true;
+				q.offer(new int[] {ni,nj});
+				plist.add(new int[] {ni,nj});
+			}
+		}
+	}
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		map = new char[12][6];
+		answer = 0;
+		
+		for(int i=0;i<12;i++) {
+			map[i] = br.readLine().toCharArray();
+		}
+		
+		boolean flag;
+		while(true) {
+			flag = false;
+			visit = new boolean[12][6];
+			
+			for(int i=0;i<12;i++) {
+				for(int j=0;j<6;j++) {
+					if(map[i][j]!='.') { //뿌요 찾으면
+						plist = new ArrayList<>();
+						find(i,j,map[i][j]); //덩어리 찾기
+						
+						if(plist.size()>=4) { //연쇄 가능
+							flag = true;
+							for(int[] p: plist) //폭발할 뿌요 다 터트리기
+								map[p[0]][p[1]] = '.'; 
+						}
+					}
+				}
+			}
+			
+			
+			if(!flag) break; //더 이상 연쇄반응이 일어나는 뿌요가 없음 - 탐색 종료
+			down();
+			answer++;
+		}
+		
+		System.out.println(answer);
+	}
 }
