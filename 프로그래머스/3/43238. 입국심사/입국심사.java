@@ -6,7 +6,6 @@ class Solution {
         Arrays.sort(times);
         
         long l=0,r=(long)times[times.length-1]*n;
-        long answer=r;
         
         while(l<=r) {
             long mid = (l+r)/2;
@@ -17,13 +16,12 @@ class Solution {
             }
             
             if(sum>=n) {
-                answer = mid;
                 r = mid-1;
             } else {
                 l = mid+1;
             }
         }
         
-        return answer;
+        return l;
     }
 }
