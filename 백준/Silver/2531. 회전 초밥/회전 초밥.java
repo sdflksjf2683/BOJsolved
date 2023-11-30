@@ -8,8 +8,6 @@ public class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
         
-        int max=0;
-        
         st = new StringTokenizer(br.readLine());
  
         int N = Integer.parseInt(st.nextToken()); 
@@ -23,30 +21,31 @@ public class Main {
         }
         
         int [] check = new int[d+1];
-        int count=0;
+        check[c] = 3001;
+        int count=1;
         
         for(int i=0;i<k;i++) {
             if(check[sushi[i]]==0) count++;
             check[sushi[i]]++;
         }
         
-        max = count;
-        int start=1, end=k;
-        while(true) {
-            
-            if(check[sushi[start-1]]==1) count--;
-            check[sushi[start-1]]--;
-            
-            if(check[sushi[end]]==0) count++;
-            check[sushi[end]]++;
-            
-            if(check[c]==0) max = Math.max(max, count+1);
-            else max = Math.max(max, count);
-            
-            start++; end++;
-            if(end==N) end=0;
-            if(start==N) break;
+        int max = count;
+        int start=-1, end=-1;
+        for(int i=0;i<N-1;i++) {
+        	start = sushi[i];
+        	if(i+k<N)
+        		end = sushi[i+k];
+        	else
+        		end = sushi[(i+k)%N];
+        	
+        	if(--check[start]==0)
+        		count--;
+        	if(++check[end]==1)
+        		count++;
+        	
+        	max = Math.max(max, count);
         }
+        
         System.out.println(max);
 	}
 }
