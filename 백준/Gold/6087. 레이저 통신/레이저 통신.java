@@ -16,18 +16,13 @@ public class Main {
 	static Point start, end;
 	
 	static int[] di = {-1,0,1,0};
-	static int[] dj = {0,-1,0,1};
+	static int[] dj = {0,1,0,-1};
 	
 	static void bfs() {
 		PriorityQueue<Point> q = new PriorityQueue<>();
 		q.offer(start);
 		
 		int[][][] visit = new int[4][H][W]; //지나갈 때 최소 거울 개수 & 방향 체크
-		for (int d = 0; d < 4; d++) {
-            for (int i = 0; i < H; i++) {
-                Arrays.fill(visit[d][i], Integer.MAX_VALUE);
-            }
-        }
 		
 		while(!q.isEmpty()) {
 			Point tmp = q.poll();
@@ -49,9 +44,9 @@ public class Main {
 				
 				int ncnt = tmp.d==d?tmp.cnt:tmp.cnt+1;
 				
-//				if(visit[ni][nj]!=0 && visit[ni][nj]<ncnt) continue; //더 많은 거울을 사용해서 재방문한 경우
+//				if(visit[ni][nj]!=0 && visit[ni][nj]<=ncnt) continue; //더 많은 거울을 사용해서 재방문한 경우
 				
-				if(visit[d][ni][nj]>ncnt) {
+				if(visit[d][ni][nj]==0 || visit[d][ni][nj]>ncnt) {
 					visit[d][ni][nj] = ncnt; //현재까지 사용한 거울 개수 기록
 					q.offer(new Point(ni,nj,d,ncnt));
 				}
@@ -73,9 +68,9 @@ public class Main {
 			for(int j=0;j<W;j++) {
 				if(map[i][j]=='C') {
 					if(start == null)
-						start = new Point(i,j,-5,-1);
+						start = new Point(i,j,-10,-1);
 					else
-						end = new Point(i,j,-5,-1);
+						end = new Point(i,j,-10,-1);
 				}
 			}
 		} //end input
