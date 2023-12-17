@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -29,8 +28,7 @@ public class Main {
 			
 			if(ni>=0 && nj>=0 && ni<R && nj<C) 
 				dfs(ni, nj, cnt+1);
-				
-			
+
 		}
 		
 		visit[map[i][j]-'A'] = false;
@@ -50,7 +48,7 @@ public class Main {
 			map[i] = br.readLine().toCharArray();
 		}
 		
-		maxCnt = 0;
+		maxCnt = 1;
 		visit = new boolean[26];
 		dfs(0,0,0);
 		System.out.println(maxCnt);
