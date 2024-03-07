@@ -9,7 +9,7 @@ public class Main {
 
     static boolean[] visit;
 
-    static PriorityQueue<Node>[] tree;
+    static ArrayList<Node>[] tree;
 
     static void find(int tmp, int dist) {
 
@@ -35,9 +35,9 @@ public class Main {
             return;
         }
 
-        tree = new PriorityQueue[N+1];
+        tree = new ArrayList[N+1];
         for(int i=1;i<=N;i++) {
-            tree[i] = new PriorityQueue<>();
+            tree[i] = new ArrayList<>();
         }
 
         StringTokenizer st;
@@ -47,8 +47,8 @@ public class Main {
             int to = Integer.parseInt(st.nextToken());
             int w = Integer.parseInt(st.nextToken());
 
-            tree[from].offer(new Node(to, w));
-            tree[to].offer(new Node(from, w));
+            tree[from].add(new Node(to, w));
+            tree[to].add(new Node(from, w));
         } //end input
 
         target = new Node(0,0);
@@ -66,17 +66,12 @@ public class Main {
         System.out.println(target.w);
     }
 
-    static class Node implements Comparable<Node> {
+    static class Node {
         int v,w;
 
         public Node(int v, int w) {
             this.v = v;
             this.w = w;
-        }
-
-        @Override
-        public int compareTo(Node o) { //내림차순 정렬(먼 정점을 먼저 선택)
-            return o.w-this.w;
         }
     }
 }
