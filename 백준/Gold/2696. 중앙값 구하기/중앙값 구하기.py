@@ -1,41 +1,51 @@
-from sys import stdin
+import sys
 from heapq import heappush, heappop
-input = lambda: stdin.readline().rstrip()
 
+input = lambda: sys.stdin.readline().rstrip()
 
-def get_median() -> None:
+def get_median(nums) -> None:
+    #1번째 중앙값은 입력값이므로 초기화하고 시작
+    #left는 중앙값보다 작은 값이 들어있는 최대힙, right는 중앙값보다 큰 값이 들어있는 최소힙
     left, right, ans = [], [], [nums[0]]
     mid = nums[0]
 
-    for i, num in enumerate(nums[1:], 1):
-        if num < mid:
-            heappush(left, -num)
+    for i,n in enumerate(nums[1:], 1):
+        #중앙값과 비교해 적절한 힙에 넣기
+        if n<mid:
+            heappush(left, -n)
         else:
-            heappush(right, num)
-
-        if i % 2 == 0:
-            if len(left) > len(right):
-                heappush(right, mid)
-                mid = -heappop(left)
-            elif len(left) < len(right):
-                heappush(left, -mid)
-                mid = heappop(right)
-            ans.append(mid)
-
-    print(M // 2 + 1)
-    for i, num in enumerate(ans):
-        if i != 0 and i % 10 == 0:
-            print()
-        print(num, end=' ')
-    print()
+            heappush(right, n)
+        
+        if i%2!=0:
+            continue
+        
+        #홀수번째 숫자일 경우 중앙값 갱신 후 배열에 저장
+        #원소 개수가 더 적은 힙에 현재 중앙값을 넣고, 더 많은 힙에서 새로운 중앙값 추출 후 저장
+        if len(left) > len(right):
+            heappush(right, mid)
+            mid = -heappop(left)
+        elif len(left) < len(right):
+            heappush(left, -mid)
+            mid = heappop(right)
+        
+        #두 힙의 크기가 같다면 중앙값 갱신X
+        ans.append(mid)
+    
+    #중앙값 개수 출력
+    print(len(ans))
+    #지금까지 찾은 중앙값 출력
+    print(*ans)
 
 
 if __name__ == "__main__":
     T = int(input())
+
     for _ in range(T):
         M = int(input())
         nums = []
-        for _ in range(M // 10 + 1):
+        
+        #여러줄에 걸친 입력 한 줄씩 받기
+        for _ in range(M//10+1):
             nums += list(map(int, input().split()))
 
-        get_median()
+        get_median(nums)
